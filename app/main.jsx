@@ -80,7 +80,6 @@ define(function(require) {
       });
 
       this.mainGraph.on('tap', 'node', function(e){
-        console.log(selectedNode);
         if (selectedNode === null) {
           selectedNode = e.cyTarget;
         }
@@ -108,6 +107,7 @@ define(function(require) {
         console.log('stop');
         clearInterval(this.interval);
         this.simulating = false;
+        document.getElementById('title').innerHTML = "VICTORY";
       }
     },
     componentWillUnmount: function() {

@@ -11,9 +11,9 @@ define(['cytoscape'], function(cytoscape) {
       if (typeof state === 'undefined') {
         return 'white';
       } else if (state === false) {
-        return '#DD0000';
+        return '#FF2222';
       } else if (state === true) {
-        return '#00DD00';
+        return '#22FF22';
       } else {
         return 'black';
       }
@@ -42,13 +42,13 @@ define(['cytoscape'], function(cytoscape) {
       .css({
         'text-outline-color': 'black',
         'text-outline-width': 1,
-        'color': 'white',
-        'width': 2,
+        'color': 'black',
+        'width': 5,
         'target-arrow-shape': 'triangle',
         'curve-style': 'bezier',
         'target-arrow-shape': 'triangle',
-        'target-arrow-color': '#ccc',
-        'line-color': '#ccc',
+        'target-arrow-color': 'black',
+        'line-color': 'black',
       })
       .selector(':selected')
       .css({
