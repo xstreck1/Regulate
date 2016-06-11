@@ -1,24 +1,42 @@
 define(['cytoscape'], function(cytoscape) {
   return function(_container) {
+    var stateValToColor = function(ele) {
+      return stateToColor(ele.data('state_val'));
+    }
+    var stateTarToColor = function(ele) {
+      return stateToColor(ele.data('target_val'));
+    }
+
+    var stateToColor = function(state){
+      if (typeof state === 'undefined') {
+        return 'white';
+      } else if (state === 0) {
+        return '#DD0000';
+      } else if (state === 1) {
+        return '#00DD00';
+      } else {
+        return 'black';
+      }
+    }
+
     return cytoscape({
       container: _container,
-
       boxSelectionEnabled: false,
       autounselectify: true,
 
       style: cytoscape.stylesheet()
       .selector('node')
       .css({
-        'content': 'data(id)',
+        'content': 'data(name)',
         'text-valign': 'center',
         'color': 'black',
-        'background-color': 'white',
-        'border-color': 'black',
-        'border-width': 1,
-        'shape': 'rectangle',
-        'width': 100,
-        'height': 25,
-        'font-size': 15
+        'background-color': stateValToColor,
+        'border-color': stateTarToColor,
+        'border-width': 5,
+        'shape': 'data(myShape)',
+        'width': 150,
+        'height': 35,
+        'font-size': 25
       })
       .selector('edge')
       .css({
@@ -47,10 +65,8 @@ define(['cytoscape'], function(cytoscape) {
 
       elements: {
         nodes: [
-          { data: { id: 'j', name: 'Jerry' } },
-          { data: { id: 'e', name: 'Elaine' } },
-          { data: { id: 'k', name: 'Kramer' } },
-          { data: { id: 'g', name: 'George' } }
+          { data: { id: 'j', name: 'Jerry', myShape: 'rectangle', target_val: 1, state_val: 0 } },
+          { data: { id: 'e', name: 'AND', myShape: 'diamond'} },
         ],
         edges: [ ]
       },
