@@ -10,9 +10,9 @@ define(['cytoscape'], function(cytoscape) {
     var stateToColor = function(state){
       if (typeof state === 'undefined') {
         return 'white';
-      } else if (state === 0) {
+      } else if (state === false) {
         return '#DD0000';
-      } else if (state === 1) {
+      } else if (state === true) {
         return '#00DD00';
       } else {
         return 'black';
@@ -23,7 +23,7 @@ define(['cytoscape'], function(cytoscape) {
       container: _container,
       boxSelectionEnabled: false,
       autounselectify: true,
-
+      wheelSensitivity : 0.1,
       style: cytoscape.stylesheet()
       .selector('node')
       .css({
@@ -34,8 +34,8 @@ define(['cytoscape'], function(cytoscape) {
         'border-color': stateTarToColor,
         'border-width': 5,
         'shape': 'data(myShape)',
-        'width': 150,
-        'height': 35,
+        'width': 200,
+        'height': 50,
         'font-size': 25
       })
       .selector('edge')
@@ -65,10 +65,17 @@ define(['cytoscape'], function(cytoscape) {
 
       elements: {
         nodes: [
-          { data: { id: 'j', name: 'Jerry', myShape: 'rectangle', target_val: 1, state_val: 0 } },
-          { data: { id: 'e', name: 'AND', myShape: 'diamond'} },
+          { data: { id: 'a', name: 'Lac', myShape: 'rectangle', target_val: true, state_val: true } },
+          { data: { id: 'b', name: 'Glu', myShape: 'rectangle', target_val: false, state_val: false } },
+          { data: { id: 'c', name: 'Glucosidase', myShape: 'rectangle', target_val: false, state_val: true } },
+          { data: { id: 'd', name: 'Lactosidase', myShape: 'rectangle', target_val: true, state_val: false } },
+          { data: { id: 'e', name: 'NOT', myShape: 'diamond', state_val: false } },
+          { data: { id: 'f', name: 'OR', myShape: 'diamond', state_val: false } },
+          { data: { id: 'g', name: 'AND', myShape: 'diamond', state_val: false } }
+
         ],
-        edges: [ ]
+        edges: [
+        ]
       },
 
       layout: {
