@@ -72,8 +72,14 @@ define(['react', 'reactDOM', 'jsx!app/graph'], function(React, ReactDOM, myGraph
         this.stopSimulating();
       }
     },
+    resetNodes: function() {
+      this.mainGraph.nodes().forEach(function(node) {node.data('state_val', node.data('init_val')); });
+      this.mainGraph.style().update();
+    },
     componentDidMount: function() {
       this.mainGraph = myGraph(document.querySelector('#graph'));
+      this.resetNodes();
+
       var selectedNode = this.state.selectedNode;
       var mainGraph = this.mainGraph;
 
@@ -91,13 +97,11 @@ define(['react', 'reactDOM', 'jsx!app/graph'], function(React, ReactDOM, myGraph
           selectedNode = null;
         }
       });
-
     },
     stopSimulating: function() {
         clearInterval(this.interval);
         this.setState({ simulating : false});
         console.log('stopped');
-        document.getElementById('title').innerHTML = "VICTORY";
     },
     startSimulating: function() {
       this.setState({ simulating : true});
@@ -112,6 +116,7 @@ define(['react', 'reactDOM', 'jsx!app/graph'], function(React, ReactDOM, myGraph
             this.startSimulating();
           }
           else {
+            this.resetNodes();
             this.stopSimulating();
           }
       }

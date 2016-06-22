@@ -3,9 +3,24 @@ define(['cytoscape'], function(cytoscape) {
     var stateValToColor = function(ele) {
       return stateToColor(ele.data('state_val'));
     }
+
     var stateTarToColor = function(ele) {
       return stateToColor(ele.data('target_val'));
     }
+
+    var graphData =  {
+        nodes: [
+          { data: { id: 'a', name: 'Lac', myShape: 'rectangle', target_val: true, init_val: true } },
+          { data: { id: 'b', name: 'Glu', myShape: 'rectangle', target_val: false, init_val: false } },
+          { data: { id: 'c', name: 'Glucosidase', myShape: 'rectangle', target_val: false, init_val: true } },
+          { data: { id: 'd', name: 'Lactosidase', myShape: 'rectangle', target_val: true, init_val: false } },
+          { data: { id: 'e', name: 'NOT', myShape: 'diamond', init_val: false } },
+          { data: { id: 'f', name: 'OR', myShape: 'diamond', init_val: false } },
+          { data: { id: 'g', name: 'AND', myShape: 'diamond', init_val: false } }
+        ],
+        edges: [
+        ]
+    };
 
     var stateToColor = function(state){
       if (typeof state === 'undefined') {
@@ -62,22 +77,9 @@ define(['cytoscape'], function(cytoscape) {
         'opacity': 0.25,
         'text-opacity': 0
       }),
-
-      elements: {
-        nodes: [
-          { data: { id: 'a', name: 'Lac', myShape: 'rectangle', target_val: true, state_val: true } },
-          { data: { id: 'b', name: 'Glu', myShape: 'rectangle', target_val: false, state_val: false } },
-          { data: { id: 'c', name: 'Glucosidase', myShape: 'rectangle', target_val: false, state_val: true } },
-          { data: { id: 'd', name: 'Lactosidase', myShape: 'rectangle', target_val: true, state_val: false } },
-          { data: { id: 'e', name: 'NOT', myShape: 'diamond', state_val: false } },
-          { data: { id: 'f', name: 'OR', myShape: 'diamond', state_val: false } },
-          { data: { id: 'g', name: 'AND', myShape: 'diamond', state_val: false } }
-
-        ],
-        edges: [
-        ]
+      elements: graphData,
+      resetNodes: function() {
       },
-
       layout: {
         name: 'grid',
         padding: 10
