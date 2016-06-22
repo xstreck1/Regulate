@@ -4,14 +4,17 @@ define(['react', 'reactDOM', 'jsx!app/graph'], function(React, ReactDOM, myGraph
       return {
         selectedNode: null,
         simulating: false,
-        timer: 0
+        timer: 0,
+        won: false
       };
     },
     render: function() {
-      const text = this.state.simulating ? 'STOP SIMULATION' : 'START SIMULATION';
+      const text = this.state.won ? 'RESET' : (this.state.simulating ? 'STOP SIMULATION' : 'START SIMULATION');
+      const won_visible = this.state.won ? "visible" : "hidden";
       return(
         <div id="graph_holder">
           <div id="graph">
+            <div id="won_message" style={{ visibility: won_visible}}><div id="won_text" >WON</div></div>
           </div>
           <div id="controls">
               <button type="button" id="simulate_button" onClick={this.handleClick} >
@@ -70,6 +73,7 @@ define(['react', 'reactDOM', 'jsx!app/graph'], function(React, ReactDOM, myGraph
       })
       if (success) {
         this.stopSimulating();
+        this.setState({ won : true});
       }
     },
     resetNodes: function() {
@@ -84,7 +88,6 @@ define(['react', 'reactDOM', 'jsx!app/graph'], function(React, ReactDOM, myGraph
       var mainGraph = this.mainGraph;
 
       this.mainGraph.on('tap', 'edge', function(e){
-        console.log('tap edge');
         this.remove([e.cyTarget]);
       });
 
@@ -93,7 +96,18 @@ define(['react', 'reactDOM', 'jsx!app/graph'], function(React, ReactDOM, myGraph
           selectedNode = e.cyTarget;
         }
         else {
-          mainGraph.add({ group: "edges", data: { id: selectedNode.id() + e.cyTarget.id(), source: selectedNode.id(), target: e.cyTarget.id() } })
+            var node = e.cyTarget;
+            var edges = mainGraph.edges("");
+            // Find the predecessors
+            var predecessors = [];
+            edges.forEach(function(edge) {
+              if (edge.data('target') === node.id()) {
+                predecessors.push(mainGraph.$("#" + edge.data('source')));
+              }
+            });
+            if ((node.data('name') === "AND" || node.data('name') === "OR") || predecessors.length == 0) {
+              mainGraph.add({ group: "edges", data: { id: selectedNode.id() + e.cyTarget.id(), source: selectedNode.id(), target: e.cyTarget.id() } });
+            }
           selectedNode = null;
         }
       });
@@ -113,7 +127,13 @@ define(['react', 'reactDOM', 'jsx!app/graph'], function(React, ReactDOM, myGraph
     },
     handleClick: function() {
           if (!this.state.simulating) {
-            this.startSimulating();
+            if (this.state.won) {
+              this.setState({ won : false});
+              this.resetNodes();
+            }
+            else {
+              this.startSimulating();
+            }
           }
           else {
             this.resetNodes();

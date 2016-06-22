@@ -40,6 +40,19 @@ body {
   width: 100%;
 }
 
+#won_message {
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+}
+
+#won_text {
+  padding-top: 100px;
+  height: calc(100% - 130px);
+  text-align: center;
+  font-size: 100px;
+}
+
 #graph_holder {
     height: 80%;
     width: 100%;
